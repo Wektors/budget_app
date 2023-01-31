@@ -1,5 +1,6 @@
 class Category:
-    def __init__(self):
+    def __init__(self, name):
+        self.name = name
         self.ledger = []
 
     def deposit(self, amount, description=""):
@@ -24,17 +25,24 @@ class Category:
             sum += each["amount"]
         return sum
     
+    def transfer(self, amount, another_cat):
+        self.withdraw(amount, "Transfer from " + self.name)
+        another_cat.deposit(amount, "Transfer to " + self.name)
 
-budget = Category()
+budget = Category("budget")
 
 budget.deposit(50, "initial")
 
-budget.withdraw(35, "apples")
+savings = Category("savings")
 
+savings.deposit(50, "initialfunds")
 
-print(budget.ledger)
+budget.transfer(30, savings)
 
 print(budget.get_balance())
+
+print(savings.get_balance())
+
 
 def create_spend_chart(categories):
     none = 0
