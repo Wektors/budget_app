@@ -5,9 +5,9 @@ class Category:
     def deposit(self, amount, description=""):
         self.ledger.append({"amount": amount, "description": description})
 
-    def withdraw(self, amount, description=""):  # not ready
+    def withdraw(self, amount, description=""):
+        curr_amount = 0
         for each in self.ledger:
-            curr_amount = 0
             curr_amount += each["amount"]
 
         negative_amount = amount * -1
@@ -18,18 +18,23 @@ class Category:
         else:
             return False
 
+    def get_balance(self):
+        sum = 0
+        for each in self.ledger:
+            sum += each["amount"]
+        return sum
+    
 
 budget = Category()
 
-budget.deposit(50, "apples")
+budget.deposit(50, "initial")
 
-if budget.withdraw(51, "apples"):
-    print("git")
-else:
-    print("dupa")
+budget.withdraw(35, "apples")
+
 
 print(budget.ledger)
 
+print(budget.get_balance())
 
 def create_spend_chart(categories):
     none = 0
