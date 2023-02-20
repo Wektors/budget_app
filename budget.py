@@ -54,7 +54,24 @@ class Category:
         title_line = ''.join(asts) + extra_ast + \
             self.name + ''.join(asts) + "\n"
 
-        return title_line + 
+        second_line = ""
+
+        for item in self.ledger:
+            desc = str(item["description"])
+            spacing = ""
+            value = str("{:.2f}".format(float(item["amount"]) * 1.00, 0))
+            for i in range(30 - len(desc) - len(value)):
+                spacing += " "
+            total = 0
+
+            second_line += desc[0:23] + spacing + value[0:7] + "\n"
+
+        sum = 0
+        for each in self.ledger:
+            sum += each["amount"]
+
+        third_line = "Total: " + str("{:.2f}".format(float(sum) * 1.00, 0))
+        return title_line + second_line + third_line
 
 
 budget = Category("budget")
@@ -67,8 +84,6 @@ savings.deposit(50, "initialfunds")
 
 budget.transfer(25, savings)
 
-
-print(savings)
 
 print(budget)
 
