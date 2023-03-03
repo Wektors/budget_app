@@ -77,16 +77,36 @@ class Category:
 budget = Category("budget")
 
 budget.deposit(50, "initial")
+budget.withdraw(50, "initial")
+
 
 savings = Category("savings")
 
 savings.deposit(50, "initialfunds")
-
-budget.transfer(25, savings)
-
-
-print(budget)
+savings.withdraw(50, "initial")
 
 
 def create_spend_chart(categories):
-    none = 0
+
+    def get_spends(category):
+        sum = 0
+        for each in category.ledger:
+            if each["amount"] < 0:
+                sum += each["amount"]
+
+        return sum
+
+    spend_list = []
+
+    for each in categories:
+        spend_list.append([get_spends(each), each.name])
+
+    spend_sum = 0
+
+    for each in spend_list:
+        spend_sum += each[0]
+
+    return spend_sum
+
+
+print(create_spend_chart([savings, budget]))
