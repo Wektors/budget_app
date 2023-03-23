@@ -77,13 +77,13 @@ class Category:
 budget = Category("budget")
 
 budget.deposit(50, "initial")
-budget.withdraw(50, "initial")
+budget.withdraw(5, "initial")
 
 
 savings = Category("savings")
 
 savings.deposit(50, "initialfunds")
-savings.withdraw(50, "initial")
+savings.withdraw(45, "initial")
 
 
 def create_spend_chart(categories):
@@ -99,14 +99,43 @@ def create_spend_chart(categories):
     spend_list = []
 
     for each in categories:
-        spend_list.append([get_spends(each), each.name])
+        spend_list.append([get_spends(each), each.name, 0])
 
     spend_sum = 0
 
     for each in spend_list:
         spend_sum += each[0]
 
-    return spend_sum
+    for each in spend_list:  # add percentages to the list
+        each[2] = int(round(spend_list[1][0] / spend_sum, 1) * 100)
+
+    percentage_list = ["100|", " 90|", " 80|", " 70|",
+                       " 60|", " 50|", " 40|", " 30|", " 20|", " 10|", "  0|"]
+
+    perc_lines = ""
+
+    for each in percentage_list:
+        perc_lines += each + "\n"
+
+    hyphens = "    --"
+
+    for each in categories:
+        hyphens += "---"
+
+    hyphens += "\n"
+
+    names_lines = []
+    longest_name = spend_list[0][1]
+
+    for each in spend_list: 
+        if len(each[1]) > len(longest_name):
+            longest_name = each[1]
+
+    result = "Percentage spent by category \n" + perc_lines + hyphens + longest_name
+
+    # str(spend_list[1][1]) + " spent: " + str(spend_list[1][2]) + "%"
+
+    return result
 
 
-print(create_spend_chart([savings, budget]))
+print(create_spend_chart([budget, savings]))
