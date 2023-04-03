@@ -107,7 +107,7 @@ def create_spend_chart(categories):
         spend_sum += each[0]
 
     for each in spend_list:  # add percentages to the list
-        each[2] = int(round(spend_list[1][0] / spend_sum, 1) * 100)
+        each[2] = int(round(each[0] / spend_sum, 1) * 100)
 
     percentage_list = ["100|", " 90|", " 80|", " 70|",
                        " 60|", " 50|", " 40|", " 30|", " 20|", " 10|", "  0|"]
@@ -124,16 +124,27 @@ def create_spend_chart(categories):
 
     hyphens += "\n"
 
-    names_lines = []
     longest_name = spend_list[0][1]
 
-    for each in spend_list: 
+    for each in spend_list:
         if len(each[1]) > len(longest_name):
             longest_name = each[1]
 
-    result = "Percentage spent by category \n" + perc_lines + hyphens + longest_name
+    sorted_spend_list = sorted(spend_list)
 
-    # str(spend_list[1][1]) + " spent: " + str(spend_list[1][2]) + "%"
+    names_list = []
+    curr_cat = 0
+    for category in sorted_spend_list:
+        names_list.append([])
+        for letter in category[1]:
+            names_list[curr_cat].append(letter)
+        curr_cat += 1
+
+    name_lines = []
+
+
+    result="Percentage spent by category \n" + str(name_lines)
+    perc_lines + hyphens + str(spend_list)
 
     return result
 
