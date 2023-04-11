@@ -133,18 +133,32 @@ def create_spend_chart(categories):
     sorted_spend_list = sorted(spend_list)
 
     names_list = []
-    curr_cat = 0
     for category in sorted_spend_list:
-        names_list.append([])
+        letter_list = []
         for letter in category[1]:
-            names_list[curr_cat].append(letter)
-        curr_cat += 1
+            letter_list.append(letter)
+        names_list.append(letter_list)
 
     name_lines = []
+    for each in longest_name:
+        name_lines.append(["     "])
 
+    for each in names_list:
+        count = 0
+        for letter in each:
+            name_lines[count] += str(letter) + "  "
+            count += 1
 
-    result="Percentage spent by category \n" + str(name_lines)
-    perc_lines + hyphens + str(spend_list)
+    name_lines_str = ""
+
+    for each in name_lines:
+        each_str = ""
+        for letter in each:
+            each_str += letter
+        name_lines_str += each_str + "\n"
+
+    result = "Percentage spent by category \n" + \
+        perc_lines + hyphens + name_lines_str
 
     return result
 
