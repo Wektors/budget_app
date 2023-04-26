@@ -16,11 +16,9 @@ class Category:
         self.ledger.append({"amount": amount, "description": description})
 
     def withdraw(self, amount, description=""):
-
         negative_amount = amount * -1
         if self.check_funds(negative_amount):
-            self.ledger.append(
-                {"amount": negative_amount, "description": description})
+            self.ledger.append({"amount": negative_amount, "description": description})
             return True
         else:
             return False
@@ -32,7 +30,6 @@ class Category:
         return sum
 
     def transfer(self, amount, another_cat):
-
         if self.check_funds(amount):
             self.withdraw(amount, "Transfer from " + self.name)
             another_cat.deposit(amount, "Transfer to " + self.name)
@@ -51,8 +48,7 @@ class Category:
         else:
             extra_ast = "*"
 
-        title_line = ''.join(asts) + extra_ast + \
-            self.name + ''.join(asts) + "\n"
+        title_line = "".join(asts) + extra_ast + self.name + "".join(asts) + "\n"
 
         second_line = ""
 
@@ -87,7 +83,6 @@ savings.withdraw(45, "initial")
 
 
 def create_spend_chart(categories):
-
     def get_spends(category):
         sum = 0
         for each in category.ledger:
@@ -106,24 +101,6 @@ def create_spend_chart(categories):
     for each in spend_list:
         spend_sum += each[0]
 
-    for each in spend_list:  # add percentages to the list
-        each[2] = int(round(each[0] / spend_sum, 1) * 100)
-
-    percentage_list = ["100|", " 90|", " 80|", " 70|",
-                       " 60|", " 50|", " 40|", " 30|", " 20|", " 10|", "  0|"]
-
-    perc_lines = ""
-
-    for each in percentage_list:
-        perc_lines += each + "\n"
-
-    hyphens = "    --"
-
-    for each in categories:
-        hyphens += "---"
-
-    hyphens += "\n"
-
     longest_name = spend_list[0][1]
 
     for each in spend_list:
@@ -131,6 +108,44 @@ def create_spend_chart(categories):
             longest_name = each[1]
 
     sorted_spend_list = sorted(spend_list)
+
+    for each in spend_list:  # add percentages to the list
+        each[2] = int(round(each[0] / spend_sum, 1) * 100)
+
+    percentage_list = [
+        "100|",
+        " 90|",
+        " 80|",
+        " 70|",
+        " 60|",
+        " 50|",
+        " 40|",
+        " 30|",
+        " 20|",
+        " 10|",
+        "  0|",
+    ]
+
+    perc_lines = ""
+
+    for each in sorted_spend_list:
+        perc = int(each[2] / 10)
+        to_empty = 10 - perc
+        count = 0
+        while count < to_empty:
+            percentage_list[count] += "   "
+            count += 1
+        while to_empty <= 10:
+            percentage_list[to_empty] += " o "
+            to_empty += 1
+            
+    for each in percentage_list:
+        perc_lines += each + "\n"
+
+    hyphens = "    --"
+
+    for each in categories:
+        hyphens += "---"
 
     names_list = []
     for category in sorted_spend_list:
@@ -155,10 +170,9 @@ def create_spend_chart(categories):
         each_str = ""
         for letter in each:
             each_str += letter
-        name_lines_str += each_str + "\n"
+        name_lines_str += "\n" + each_str
 
-    result = "Percentage spent by category \n" + \
-        perc_lines + hyphens + name_lines_str
+    result = "Percentage spent by category \n" + perc_lines + hyphens + name_lines_str
 
     return result
 
