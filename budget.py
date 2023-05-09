@@ -58,7 +58,6 @@ class Category:
             value = str("{:.2f}".format(float(item["amount"]) * 1.00, 0))
             for i in range(30 - len(desc) - len(value)):
                 spacing += " "
-            total = 0
 
             second_line += desc[0:23] + spacing + value[0:7] + "\n"
 
@@ -70,31 +69,23 @@ class Category:
         return title_line + second_line + third_line
 
 
-budget = Category("budget")
-
-budget.deposit(50, "initial")
-budget.withdraw(5, "initial")
-
-
-savings = Category("savings")
-
-savings.deposit(50, "initialfunds")
-savings.withdraw(45, "initial")
-
-
 def create_spend_chart(categories):
     def get_spends(category):
         sum = 0
         for each in category.ledger:
             if each["amount"] < 0:
                 sum += each["amount"]
-
         return sum
 
     spend_list = []
 
     for each in categories:
-        spend_list.append([get_spends(each), each.name, 0])
+        spend_list.append(
+            [
+                get_spends(each),
+                each.name,
+            ]
+        )
 
     spend_sum = 0
 
@@ -107,10 +98,17 @@ def create_spend_chart(categories):
         if len(each[1]) > len(longest_name):
             longest_name = each[1]
 
-    sorted_spend_list = sorted(spend_list)
+    total_spends = 0
+
+    for each in spend_list:
+        total_spends += each[0]
 
     for each in spend_list:  # add percentages to the list
-        each[2] = int(round(each[0] / spend_sum, 1) * 100)
+        each.append(round((each[0] / total_spends) * 100))
+
+    sorted_spend_list = sorted(spend_list)
+
+    print(sorted_spend_list)
 
     percentage_list = [
         "100|",
@@ -130,7 +128,7 @@ def create_spend_chart(categories):
 
     for each in sorted_spend_list:
         perc = int(each[2] / 10)
-        to_empty = 10 - perc
+        to_empty = 9 - perc
         count = 0
         while count < to_empty:
             percentage_list[count] += "   "
@@ -138,7 +136,7 @@ def create_spend_chart(categories):
         while to_empty <= 10:
             percentage_list[to_empty] += " o "
             to_empty += 1
-            
+
     for each in percentage_list:
         perc_lines += each + "\n"
 
@@ -177,4 +175,19 @@ def create_spend_chart(categories):
     return result
 
 
-print(create_spend_chart([budget, savings]))
+budget = Category("budget")
+
+budget.deposit(50, "initial")
+budget.withdraw(5, "initial")
+
+savings = Category("savings")
+
+savings.deposit(50, "initialfunds")
+savings.withdraw(45, "initial")
+
+Tips = Category("Tips")
+
+Tips.deposit(50, "initialfunds")
+Tips.withdraw(25, "initial")
+
+print(create_spend_chart([budget, savings, Tips]))
