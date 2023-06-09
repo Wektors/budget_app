@@ -17,7 +17,7 @@ class Category:
 
     def withdraw(self, amount, description=""):
         negative_amount = amount * -1
-        if self.check_funds(negative_amount):
+        if self.check_funds(amount):
             self.ledger.append({"amount": negative_amount, "description": description})
             return True
         else:
@@ -31,8 +31,8 @@ class Category:
 
     def transfer(self, amount, another_cat):
         if self.check_funds(amount):
-            self.withdraw(amount, "Transfer from " + self.name)
-            another_cat.deposit(amount, "Transfer to " + self.name)
+            self.withdraw(amount, "Transfer to " + another_cat.name)
+            another_cat.deposit(amount, "Transfer from " + self.name)
             return True
 
         else:
@@ -40,7 +40,7 @@ class Category:
 
     def __str__(self):
         asts = []  # asterisks
-        for each in range(round((29 - len(self.name)) / 2)):
+        for each in range(round((30 + -len(self.name)) / 2)):
             asts.append("*")
 
         if len(self.name) % 2 == 0:
@@ -56,7 +56,7 @@ class Category:
             desc = str(item["description"])
             spacing = ""
             value = str("{:.2f}".format(float(item["amount"]) * 1.00, 0))
-            for i in range(30 - len(desc) - len(value)):
+            for i in range(30 - len(desc[0:23]) - len(value)):
                 spacing += " "
 
             second_line += desc[0:23] + spacing + value[0:7] + "\n"
@@ -161,6 +161,10 @@ def create_spend_chart(categories):
         for letter in each:
             name_lines[count] += str(letter) + "  "
             count += 1
+        if count < len(longest_name):
+            for each in range(len(longest_name) - count):
+                name_lines[count] += "   "
+                count += 1
 
     name_lines_str = ""
 
@@ -175,19 +179,41 @@ def create_spend_chart(categories):
     return result
 
 
-budget = Category("budget")
+# budget = Category("budget")
 
-budget.deposit(50, "initial")
-budget.withdraw(5, "initial")
+# budget.deposit(50, "initial")
+# budget.withdraw(5, "initial")
 
-savings = Category("savings")
+# savings = Category("savings")
 
-savings.deposit(50, "initialfunds")
-savings.withdraw(45, "initial")
+# savings.deposit(50, "initialfunds")
+# savings.withdraw(45, "initial")
 
-Tips = Category("Tips")
+# Tips = Category("Tips")
 
-Tips.deposit(50, "initialfunds")
-Tips.withdraw(25, "initial")
+# Tips.deposit(50, "initialfunds")
+# Tips.withdraw(25, "initial")
 
-print(create_spend_chart([budget, savings, Tips]))
+# print(create_spend_chart([budget, savings, Tips]))
+
+import budget
+from budget import create_spend_chart
+from unittest import main
+
+food = budget.Category("Food")
+food.deposit(1000, "initial deposit")
+food.withdraw(10.15, "groceries")
+food.withdraw(15.89, "restaurant and more food for dessert")
+print(food.get_balance())
+clothing = budget.Category("Clothing")
+food.transfer(50, clothing)
+clothing.withdraw(25.55)
+clothing.withdraw(100)
+auto = budget.Category("Auto")
+auto.deposit(1000, "initial deposit")
+auto.withdraw(15)
+
+print(food)
+print(clothing)
+
+print(create_spend_chart([food, clothing, auto]))
