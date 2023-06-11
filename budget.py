@@ -128,7 +128,7 @@ def create_spend_chart(categories):
 
     for each in sorted_spend_list:
         perc = int(each[2] / 10)
-        to_empty = 9 - perc
+        to_empty = 10 - perc
         count = 0
         while count < to_empty:
             percentage_list[count] += "   "
@@ -140,7 +140,7 @@ def create_spend_chart(categories):
     for each in percentage_list:
         perc_lines += each + "\n"
 
-    hyphens = "    --"
+    hyphens = "    -"
 
     for each in categories:
         hyphens += "---"
@@ -182,38 +182,38 @@ def create_spend_chart(categories):
 # budget = Category("budget")
 
 # budget.deposit(50, "initial")
-# budget.withdraw(5, "initial")
+# budget.withdraw(20, "initial")
 
 # savings = Category("savings")
 
 # savings.deposit(50, "initialfunds")
-# savings.withdraw(45, "initial")
+# savings.withdraw(30, "initial")
 
 # Tips = Category("Tips")
 
 # Tips.deposit(50, "initialfunds")
-# Tips.withdraw(25, "initial")
+# Tips.withdraw(40, "initial")
 
 # print(create_spend_chart([budget, savings, Tips]))
 
-import budget
-from budget import create_spend_chart
-from unittest import main
+# import budget
+# from budget import create_spend_chart
+# from unittest import main
 
-food = budget.Category("Food")
-food.deposit(1000, "initial deposit")
-food.withdraw(10.15, "groceries")
-food.withdraw(15.89, "restaurant and more food for dessert")
-print(food.get_balance())
-clothing = budget.Category("Clothing")
-food.transfer(50, clothing)
-clothing.withdraw(25.55)
-clothing.withdraw(100)
-auto = budget.Category("Auto")
-auto.deposit(1000, "initial deposit")
-auto.withdraw(15)
+# food = budget.Category("Food")
+# food.deposit(1000, "initial deposit")
+# food.withdraw(10.15, "groceries")
+# food.withdraw(15.89, "restaurant and more food for dessert")
+# print(food.get_balance())
+# clothing = budget.Category("Clothing")
+# food.transfer(50, clothing)
+# clothing.withdraw(25.55)
+# clothing.withdraw(100)
+# auto = budget.Category("Auto")
+# auto.deposit(1000, "initial deposit")
+# auto.withdraw(15)
 
-print(food)
-print(clothing)
+# print(food)
+# print(clothing)
 
-print(create_spend_chart([food, clothing, auto]))
+# print(create_spend_chart([food, clothing, auto]))
